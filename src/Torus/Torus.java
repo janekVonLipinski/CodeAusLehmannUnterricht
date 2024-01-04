@@ -1,6 +1,5 @@
 package Torus;
 
-import Util.Matrix;
 import Util.VektorR3;
 
 public class Torus {
@@ -27,6 +26,8 @@ public class Torus {
         //Laufvariable
         int i = 0;
 
+
+
         // Theta geht um das Zentrum des Torus
         for (double theta = 0; theta < 2 * Math.PI; theta += deltaTheta) {
 
@@ -43,85 +44,14 @@ public class Torus {
                 //den Polarkoordinaten y = r cosTheta und z = r sinTheta
                 //durch Multiplikation mit der Rotationsmatrix R_x wird entstandene Kreis um die x-Achse gedreht
 
-                double x = r2 * cosPhi + (r2 + r1 * cosTheta) * sinPhi;
-                double y = -r2 * sinPhi + (r2 + r1 * cosTheta) * cosPhi;
-                double z = r2 + r1 * sinTheta;
+                int x = (int) ((r1 + r2 * cosTheta) * cosPhi);
+                int y = (int) (r2 * sinTheta);
+                int z = (int) (-(r1 + r2 * cosTheta) * sinPhi);
 
                 VektorR3 v = new VektorR3(x, y, z);
                 punkte[i++] = v;
             }
         }
-    }
-
-    public void rotate(VektorR3 drehVektor) {
-
-        //Drehvektor ist der Vektor um den gedreht wird
-
-        //Drehvektor wird auf Länge eins skaliert
-        if (drehVektor.getLaenge() != 1) {
-            drehVektor.skaliere(1 / drehVektor.getLaenge());
-        }
-
-
-    }
-
-    public Matrix harmonisiereDrehMatrix(VektorR3 drehvektor, VektorR3 stuetzVektor, double alpha) {
-
-        double nx = drehvektor.getX();
-        double ny = drehvektor.getY();
-        double nz = drehvektor.getZ();
-
-        Matrix drehMatrix = new Matrix(4, 4);
-
-        double[][] drehWerte = {
-                {
-                        nx * nx * (1 - Math.cos(alpha)) + Math.cos(alpha),
-                        nx * ny * (1 - Math.cos(alpha)) - nz * Math.sin(alpha),
-                        nx * nz * (1 - Math.cos(alpha)) - nx * Math.sin(alpha),
-                        0
-                },
-                {
-                        ny * nx * (1 - Math.cos(alpha)) + nz * Math.sin(alpha),
-                        ny * ny * (1 - Math.cos(alpha)) + Math.cos(alpha),
-                        ny * nz * (1 - Math.cos(alpha)) - nx * Math.sin(alpha),
-                        0
-                },
-                {
-                        nz * nx * (1 - Math.cos(alpha)) - ny * Math.sin(alpha),
-                        nz * ny * (1 - Math.cos(alpha)) + nx * Math.sin(alpha),
-                        nz * nz * (1 - Math.cos(alpha)) + Math.cos(alpha),
-                        0
-                },
-                {
-                        0, 0, 0, 1
-                }
-        };
-
-        drehMatrix.setMatrix(drehWerte);
-
-        double sx = stuetzVektor.getX();
-        double sy = stuetzVektor.getY();
-        double sz = stuetzVektor.getZ();
-
-        Matrix additionsMatrix = new Matrix(4, 4);
-        double[][] additionAlsArray = {
-                {1, 0, 0, sx},
-                {0, 1, 0, sy},
-                {0, 0, 1, sz},
-                {0, 0, 0, 1}
-        };
-        additionsMatrix.setMatrix(additionAlsArray);
-
-        Matrix subtraktionsMatrix = new Matrix(4, 4);
-        double[][] subtraktionAlsMatrix = {
-                {1, 0, 0, -sx},
-                {0, 1, 0, -sy},
-                {0, 0, 1, -sy},
-                {0, 0, 0, 1}
-        };
-        subtraktionsMatrix.setMatrix(subtraktionAlsMatrix);
-
-        return additionsMatrix.multipliziere(drehMatrix).multipliziere(subtraktionsMatrix);
     }
 }
 
