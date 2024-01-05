@@ -8,11 +8,13 @@ import java.awt.*;
 
 public class GUI extends JPanel {
 
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 800;
     private static final double r1 = 200;
     private static final double r2 = 100;
     private static double alpha;
+    private static double beta;
+    private static double gamma;
 
     public static void main(String[] args) {
 
@@ -23,16 +25,17 @@ public class GUI extends JPanel {
         window.setSize(WIDTH, HEIGHT);
 
         GUI gui = new GUI();
+        Koordinatensystem koordinatensystem = new Koordinatensystem(WIDTH, HEIGHT);
 
+        window.add(koordinatensystem);
         window.add(gui);
 
         window.setVisible(true);
 
         while (true) {
-            if (alpha > 2 * Math.PI) {
-                alpha = 0;
-            }
-            alpha += 0.1;
+            alpha += 0.01;
+            beta += 0.02;
+            gamma += 0.03;
             gui.repaint();
             try {
                 Thread.sleep(10);
@@ -48,7 +51,7 @@ public class GUI extends JPanel {
         Torus torus = new Torus(20, 20, r1, r2);
         super.paint(g);
         g.translate(WIDTH / 2, HEIGHT / 2);
-        Matrix drehMatrix = getDrehMatrix(alpha);
+        Matrix drehMatrix = getDrehMatrix(alpha, beta, gamma);
         for (int i = 0; i < 1598; i++) {
 
             int[] xs = new int[3];
@@ -67,18 +70,42 @@ public class GUI extends JPanel {
         }
     }
 
-    private Matrix getDrehMatrix(double alpha) {
+    private Matrix getDrehMatrix(double alpha, double beta, double gamma) {
+
         double sinAlpha = Math.sin(alpha);
         double cosAlpha = Math.cos(alpha);
-        double[][] drehmatrix = {
+
+        double sinBeta = Math.sin(beta);
+        double cosBeta = Math.cos(beta);
+
+        double sinGamma = Math.sin(gamma);
+        double cosGamma = Math.cos(gamma);
+
+        double[][] drehmatrixX = {
                 {1, 0, 0},
                 {0, cosAlpha, -sinAlpha},
                 {0, sinAlpha, cosAlpha}
         };
         Matrix m = new Matrix(3, 3);
-        m.setMatrix(drehmatrix);
+        m.setMatrix(drehmatrixX);
 
+        double[][] drehMatrixY = {
+                {cosBeta, 0, - sinBeta},
+                {0, 1, 0},
+                {sinBeta, 0, cosBeta}
+        };
+        Matrix n = new Matrix(3, 3);
+        n.setMatrix(drehMatrixY);
 
-        return m;
+        double[][] drehMatrixZ = {
+                {cosGamma, - sinGamma, 0},
+                {sinGamma, cosGamma, 0},
+                {0, 0, 1}
+        };
+        Matrix o = new Matrix(3, 3);
+        o.setMatrix(drehMatrixZ);
+
+        Matrix zwischenErgebnis = m.multipliziere(n);
+        return zwischenErgebnis.multipliziere(o);
     }
 }

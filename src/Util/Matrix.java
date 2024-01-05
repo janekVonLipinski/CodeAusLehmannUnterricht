@@ -67,4 +67,14 @@ public class Matrix {
 
         return ergebnis;
     }
+
+    public Matrix skaliere(double skalar) {
+        Matrix m = new Matrix(anzahlZeilen, anzahlSpalten);
+        for (int i = 0; i < anzahlZeilen; i++) {
+            for (int j = 0; j < anzahlSpalten; j++) {
+                m.matrix[i][j] = matrix[i][j] * skalar;
+            }
+        }
+        return m;
+    }
 }
