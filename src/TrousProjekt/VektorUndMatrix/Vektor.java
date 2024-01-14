@@ -51,18 +51,13 @@ public class Vektor {
         this.skaliere(this.getLaenge());
     }
 
-    public boolean istGleich(Vektor vektor) {
-        return x == vektor.x && y == vektor.y && z == vektor.z;
-    }
-
     public Vektor multipliziere(Matrix matrix) {
         if (matrix.getAnzahlSpalten() != 3 || matrix.getAnzahlZeilen() != 3) {
             throw new IllegalArgumentException("Matrix muss 3 Kreuz 3 sein");
         }
 
         double[][] vektorAlsArray = {{this.x}, {this.y}, {this.z}};
-        Matrix vektorAlsMatrix = new Matrix(3,1);
-        vektorAlsMatrix.setMatrix(vektorAlsArray);
+        Matrix vektorAlsMatrix = new Matrix(vektorAlsArray);
 
         Matrix neueMatrix = matrix.multipliziere(vektorAlsMatrix);
         double[][] array = neueMatrix.getMatrix();

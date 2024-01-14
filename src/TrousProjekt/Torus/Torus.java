@@ -8,29 +8,24 @@ import java.awt.*;
 
 public class Torus extends JPanel {
 
-    private static final double r1 = 200;
-    private static final double r2 = 100;
-    static final int WIDTH = 1000;
-    static final int HEIGHT = 800;
+    private final int WIDTH;
+    private final int HEIGHT;
 
+    private static final double radiusAussen = 200;
+    private static final double radiusInnen = 100;
+    private static final double deltaAlpha = 0.01;
+    private static final double deltaBeta = 0.01;
+    private static final double deltaGamma = 0.01;
     private static double alpha;
     private static double beta;
     private static double gamma;
     private final Vektor[] punkte;
-    private final Vektor[] normalen;
 
-    public Torus(int a, int b) {
-        this.punkte = new Vektor[4 * a * b];
-        this.normalen = new Vektor[4 * a * b];
-        getTorus(a, b);
-    }
-
-    public Vektor[] getPunkte() {
-        return punkte;
-    }
-
-    public Vektor[] getNormalen() {
-        return normalen;
+    public Torus(int anzahlPunkteAussen, int anzahlPunkteInnen, int width, int height) {
+        this.punkte = new Vektor[4 * anzahlPunkteAussen * anzahlPunkteInnen];
+        getTorus(anzahlPunkteAussen, anzahlPunkteInnen);
+        WIDTH = width;
+        HEIGHT = height;
     }
 
     public void getTorus(int a, int b) {
@@ -54,30 +49,16 @@ public class Torus extends JPanel {
                 double cosPhi = Math.cos(phi);
                 double sinPhi = Math.sin(phi);
 
-                int x1 = (int) ((r1 + r2 * cosTheta) * cosPhi);
-                int y1 = (int) (r2 * sinTheta);
-                int z1 = (int) (-(r1 + r2 * cosTheta) * sinPhi);
-
-                double nx1 =  (cosTheta * cosPhi);
-                double ny1 =  (sinTheta * cosPhi);
-                double nz1 =  (sinPhi);
-
-                Vektor n1 = new Vektor(nx1, ny1, nz1);
-                normalen[i] = n1;
+                int x1 = (int) ((radiusAussen + radiusInnen * cosTheta) * cosPhi);
+                int y1 = (int) (radiusInnen * sinTheta);
+                int z1 = (int) (-(radiusAussen + radiusInnen * cosTheta) * sinPhi);
 
                 Vektor v1 = new Vektor(x1, y1, z1);
                 punkte[i++] = v1;
 
-                int x2 = (int) ((r1 + r2 * nextCosTheta) * cosPhi);
-                int y2 = (int) (r2 * nextSinTheta);
-                int z2 = (int) (-(r1 + r2 * nextCosTheta) * sinPhi);
-
-                double nx2 = (nextCosTheta * cosPhi);
-                double ny2 = (nextSinTheta * cosPhi);
-                double nz2 = (sinPhi);
-
-                Vektor n2 = new Vektor(nx2, ny2, nz2);
-                normalen[i] = n2;
+                int x2 = (int) ((radiusAussen + radiusInnen * nextCosTheta) * cosPhi);
+                int y2 = (int) (radiusInnen * nextSinTheta);
+                int z2 = (int) (-(radiusAussen + radiusInnen * nextCosTheta) * sinPhi);
 
                 Vektor v2 = new Vektor(x2, y2, z2);
                 punkte[i++] = v2;
@@ -89,10 +70,9 @@ public class Torus extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         g.translate(WIDTH / 2, HEIGHT / 2);
-        Matrix drehMatrix = new Matrix(3,3)
-                .getDrehMatrix(alpha, beta, gamma);
+        Matrix drehMatrix = Matrix.getDrehMatrix(alpha, beta, gamma);
 
-        for (int i = 0; i < 1598; i++) {
+        for (int i = 0; i < punkte.length - 2; i++) {
 
             int[] xs = new int[3];
             int[] zs = new int[3];
@@ -112,9 +92,9 @@ public class Torus extends JPanel {
 
     public void rotate() {
         while (true) {
-            alpha += 0.01;
-            beta += 0.02;
-            gamma += 0.03;
+            alpha += deltaAlpha;
+            beta += deltaBeta;
+            gamma += deltaGamma;
             this.repaint();
             try {
                 Thread.sleep(10);
