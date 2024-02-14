@@ -50,6 +50,10 @@ public class Vektor {
     public void normiere() {
         this.skaliere(this.getLaenge());
     }
+    public Matrix transformiereZuMatrix() {
+        double[][] vektorAlsMatrix = {{x}, {y}, {z}};
+        return new Matrix(vektorAlsMatrix);
+    }
 
     public Vektor multipliziere(Matrix matrix) {
         if (matrix.getAnzahlSpalten() != 3 || matrix.getAnzahlZeilen() != 3) {

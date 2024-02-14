@@ -1,5 +1,7 @@
 package TrousProjekt.VektorUndMatrix;
 
+import java.util.Arrays;
+
 public class Matrix {
 
     private final double[][] matrix;
@@ -91,5 +93,10 @@ public class Matrix {
         Matrix drehMatrixZ = new Matrix(drehMatrixArrayZ);
 
         return drehMatrixX.multipliziere(drehMatrixY).multipliziere(drehMatrixZ);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.deepToString(matrix);
     }
 }
