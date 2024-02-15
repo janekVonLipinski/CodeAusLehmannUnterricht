@@ -29,15 +29,4 @@ class GaussAlgorithmusTest {
         }
     }
 
-    @Test
-    void Given_When() {
-        double[][] test = {{1,0,2}, {3,2,1}, {4,1,3}};
-        double[] loeusngsVektor = {1, 0, 0};
-        System.out.println(Arrays.deepToString(test));
-
-        double[][] loesung = gaussAlgorithmus.loeseGleichungssystem(new Matrix(test), loeusngsVektor);
-        System.out.println(Arrays.deepToString(loesung));
-        System.out.println(Arrays.toString(loeusngsVektor));
-    }
-
 }

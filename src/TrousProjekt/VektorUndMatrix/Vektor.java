@@ -2,65 +2,25 @@ package TrousProjekt.VektorUndMatrix;
 
 public class Vektor {
 
-    private final double x;
-    private final double y;
-    private final double z;
+    private final double[] vektorWerte;
 
-    public Vektor(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Vektor(double[] werte) {
+        this.vektorWerte = werte;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public Vektor skaliere(double skalar) {
-        return new Vektor(x * skalar, y * skalar, z * skalar);
-    }
-    public Vektor skaliere(Vektor skalar) {
-        return new Vektor(x * skalar.x, y * skalar.y, z * skalar.z);
-    }
-
-    public Vektor addiere(Vektor vektor) {
-        return new Vektor(x + vektor.x, y + vektor.y, z + vektor.z);
-    }
-
-    public double getSkalarprodukt(Vektor vektor) {
-        return x * vektor.x + y * vektor.y + z * vektor.z;
-    }
-
-    public double getLaenge() {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
-
-    public double getWinkel(Vektor vektor) {
-        return Math.acos(this.getSkalarprodukt(vektor) / (this.getLaenge() * vektor.getLaenge()));
-    }
-
-    public void normiere() {
-        this.skaliere(this.getLaenge());
-    }
-    public Matrix transformiereZuMatrix() {
-        double[][] vektorAlsMatrix = {{x}, {y}, {z}};
-        return new Matrix(vektorAlsMatrix);
+    public double[] getVektorWerte() {
+        return vektorWerte;
     }
 
     public Vektor multipliziere(Matrix matrix) {
+        double x = vektorWerte[0];
+        double y = vektorWerte[1];
+        double z = vektorWerte[2];
         if (matrix.getAnzahlSpalten() != 3 || matrix.getAnzahlZeilen() != 3) {
             throw new IllegalArgumentException("Matrix muss 3 Kreuz 3 sein");
         }
 
-        double[][] vektorAlsArray = {{this.x}, {this.y}, {this.z}};
+        double[][] vektorAlsArray = {{x}, {y}, {z}};
         Matrix vektorAlsMatrix = new Matrix(vektorAlsArray);
 
         Matrix neueMatrix = matrix.multipliziere(vektorAlsMatrix);

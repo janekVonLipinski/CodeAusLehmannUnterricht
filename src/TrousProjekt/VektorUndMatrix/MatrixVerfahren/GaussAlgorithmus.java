@@ -7,19 +7,26 @@ import java.util.Arrays;
 public class GaussAlgorithmus {
 
     public double[][] loeseGleichungssystem(Matrix koeffizientenMatrix, double[] vektor) {
+
+        if (koeffizientenMatrix.getAnzahlSpalten() != koeffizientenMatrix.getAnzahlZeilen()) {
+            throw new IllegalArgumentException("Matrix muss quadratisch sein");
+        }
         double[][] matrixArray = koeffizientenMatrix.getMatrix().clone();
 
-        double[][] dreiecksMatrix = getDreieckMatrix(matrixArray, vektor);
+        double[][] dreiecksMatrix = getStufenForm(matrixArray, vektor);
+
         int groessterIndex = dreiecksMatrix.length - 1;
         if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {
             // mach was
         }
-        double[][] diagonalMatrix = getDiagonalMatrixVonDreiecksMatrix(dreiecksMatrix, vektor);
+
+        double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektor);
+
 
         return diagonalMatrix;
     }
 
-    protected double[][] getDiagonalMatrixVonDreiecksMatrix(double[][] matrix, double[] vektor) {
+    protected double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
 
         for (int j = matrix.length - 1; j >= 0; j--) {
             for (int k = 1; j - k >= 0; k++) {
@@ -41,7 +48,7 @@ public class GaussAlgorithmus {
         return matrix;
     }
 
-    protected double[][] getDreieckMatrix(double[][] matrix, double[] vektor) {
+    protected double[][] getStufenForm(double[][] matrix, double[] vektor) {
 
         for (int j = 0; j < matrix.length; j++) {
             int i = 1;
