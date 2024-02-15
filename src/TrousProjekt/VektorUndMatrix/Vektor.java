@@ -1,5 +1,7 @@
 package TrousProjekt.VektorUndMatrix;
 
+import java.util.Arrays;
+
 public class Vektor {
 
     private final double[] vektorWerte;
@@ -13,27 +15,27 @@ public class Vektor {
     }
 
     public Vektor multipliziere(Matrix matrix) {
-        double x = vektorWerte[0];
-        double y = vektorWerte[1];
-        double z = vektorWerte[2];
-        if (matrix.getAnzahlSpalten() != 3 || matrix.getAnzahlZeilen() != 3) {
-            throw new IllegalArgumentException("Matrix muss 3 Kreuz 3 sein");
+
+        double[][] vektorAlsArray = new double[vektorWerte.length][1];
+        for (int i = 0; i < vektorWerte.length; i++) {
+            vektorAlsArray[i][0] = vektorWerte[i];
         }
 
-        double[][] vektorAlsArray = {{x}, {y}, {z}};
         Matrix vektorAlsMatrix = new Matrix(vektorAlsArray);
-
         Matrix neueMatrix = matrix.multipliziere(vektorAlsMatrix);
+
         double[][] array = neueMatrix.getMatrix();
-        return new Vektor(array[0][0], array[1][0], array[2][0]);
+
+        double[] vektor = new double[array.length];
+        for (int i = 0; i < array.length; i++) {
+            vektor[i] = array[i][0];
+        }
+
+        return new Vektor(vektor);
     }
 
     @Override
     public String toString() {
-        return "Vektor{" +
-                "x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return Arrays.toString(vektorWerte);
     }
 }

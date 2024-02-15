@@ -53,14 +53,16 @@ public class Torus extends JPanel {
                 int y1 = (int) (radiusInnen * sinTheta);
                 int z1 = (int) (-(radiusAussen + radiusInnen * cosTheta) * sinPhi);
 
-                Vektor v1 = new Vektor(x1, y1, z1);
+                double[] werte = {x1, y1, z1};
+                Vektor v1 = new Vektor(werte);
                 punkte[i++] = v1;
 
                 int x2 = (int) ((radiusAussen + radiusInnen * nextCosTheta) * cosPhi);
                 int y2 = (int) (radiusInnen * nextSinTheta);
                 int z2 = (int) (-(radiusAussen + radiusInnen * nextCosTheta) * sinPhi);
 
-                Vektor v2 = new Vektor(x2, y2, z2);
+                double[] andereWerte = {x2, y2, z2};
+                Vektor v2 = new Vektor(andereWerte);
                 punkte[i++] = v2;
             }
         }
@@ -78,9 +80,9 @@ public class Torus extends JPanel {
             int[] zs = new int[3];
 
             for (int k = 0; k < 3; k++) {
-                int x = (int) punkte[(i+k)].multipliziere(drehMatrix).getX();
-                int y = (int) punkte[(i+k)].multipliziere(drehMatrix).getY();
-                int z = (int) punkte[(i+k)].multipliziere(drehMatrix).getZ();
+                int x = (int) punkte[(i+k)].multipliziere(drehMatrix).getVektorWerte()[0];
+                int y = (int) punkte[(i+k)].multipliziere(drehMatrix).getVektorWerte()[1];
+                int z = (int) punkte[(i+k)].multipliziere(drehMatrix).getVektorWerte()[2];
 
                 xs[k] = x - y / 2;
                 zs[k] = z - y / 2;

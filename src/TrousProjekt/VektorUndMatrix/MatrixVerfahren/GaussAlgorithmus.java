@@ -1,32 +1,49 @@
 package TrousProjekt.VektorUndMatrix.MatrixVerfahren;
 
 import TrousProjekt.VektorUndMatrix.Matrix;
+import TrousProjekt.VektorUndMatrix.Vektor;
 
 import java.util.Arrays;
 
 public class GaussAlgorithmus {
 
-    public double[][] loeseGleichungssystem(Matrix koeffizientenMatrix, double[] vektor) {
+    public Vektor loeseGleichungssystem(Matrix koeffizientenMatrix, Vektor vektor) {
 
         if (koeffizientenMatrix.getAnzahlSpalten() != koeffizientenMatrix.getAnzahlZeilen()) {
             throw new IllegalArgumentException("Matrix muss quadratisch sein");
         }
-        double[][] matrixArray = koeffizientenMatrix.getMatrix().clone();
 
-        double[][] dreiecksMatrix = getStufenForm(matrixArray, vektor);
+        double[][] matrixArray = koeffizientenMatrix.getMatrix().clone();
+        double[] vektorArray = vektor.getVektorWerte().clone();
+
+        double[][] dreiecksMatrix = getStufenForm(matrixArray, vektorArray);
 
         int groessterIndex = dreiecksMatrix.length - 1;
+
         if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {
-            // mach was
+            if (vektorArray[groessterIndex] == 0) {
+                System.out.println("Unendliche Viele Lösungen");
+            } else {
+                return null;
+            }
         }
 
-        double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektor);
+        double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektorArray);
 
+        double[] loesung = getLoesung(vektorArray, diagonalMatrix);
 
-        return diagonalMatrix;
+        return new Vektor(loesung);
     }
 
-    protected double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
+    private static double[] getLoesung(double[] vektorArray, double[][] diagonalMatrix) {
+        double[] loesung = new double[diagonalMatrix.length];
+        for (int i = 0; i < diagonalMatrix.length; i++) {
+            loesung[i] = vektorArray[i] / diagonalMatrix[i][i];
+        }
+        return loesung;
+    }
+
+    private double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
 
         for (int j = matrix.length - 1; j >= 0; j--) {
             for (int k = 1; j - k >= 0; k++) {
@@ -48,7 +65,7 @@ public class GaussAlgorithmus {
         return matrix;
     }
 
-    protected double[][] getStufenForm(double[][] matrix, double[] vektor) {
+    private double[][] getStufenForm(double[][] matrix, double[] vektor) {
 
         for (int j = 0; j < matrix.length; j++) {
             int i = 1;
@@ -75,7 +92,7 @@ public class GaussAlgorithmus {
         return matrix;
     }
 
-    protected void tausche(double[][] matrixArray, int indexErsteZeile, int indexZweiteZeile) {
+    private void tausche(double[][] matrixArray, int indexErsteZeile, int indexZweiteZeile) {
 
         double[] ersteZeile = matrixArray[indexErsteZeile];
         double[] zweiteZeile = matrixArray[indexZweiteZeile];
@@ -84,7 +101,7 @@ public class GaussAlgorithmus {
         matrixArray[indexZweiteZeile] = ersteZeile;
     }
 
-    protected void tausche(double[] vektor, int ersterIndex, int zweiterIndex) {
+    private void tausche(double[] vektor, int ersterIndex, int zweiterIndex) {
         double temp = vektor[ersterIndex];
         vektor[ersterIndex] = vektor[zweiterIndex];
         vektor[zweiterIndex] = temp;
@@ -103,14 +120,14 @@ public class GaussAlgorithmus {
         return returnArray;
     }
 
-    protected double[] getMultiplizierteZeile(double[] zeile, double koeffizient)  {
+    private double[] getMultiplizierteZeile(double[] zeile, double koeffizient)  {
         double[] copy = Arrays.copyOf(zeile, zeile.length);
         return Arrays.stream(copy)
                 .map(i -> i * koeffizient)
                 .toArray();
     }
 
-    protected double getKoeffizient(double ersterWert, double zweiterWert) {
+    private double getKoeffizient(double ersterWert, double zweiterWert) {
         return zweiterWert / ersterWert;
     }
 }
