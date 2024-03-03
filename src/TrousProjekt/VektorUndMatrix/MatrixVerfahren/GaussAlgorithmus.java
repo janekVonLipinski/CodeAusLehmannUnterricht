@@ -18,6 +18,15 @@ public class GaussAlgorithmus {
 
         double[][] dreiecksMatrix = getStufenForm(matrixArray, vektorArray);
 
+        for (int i = 0; i < dreiecksMatrix.length; i++) {
+            long anzahlNullen = Arrays.stream(dreiecksMatrix[i])
+                    .filter(j -> j == 0)
+                    .count();
+            tausche(dreiecksMatrix[i], i, dreiecksMatrix.length - i -1);
+        }
+        //funkt nicht
+
+        System.out.println(Arrays.deepToString(dreiecksMatrix));
         int groessterIndex = dreiecksMatrix.length - 1;
 
         if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {

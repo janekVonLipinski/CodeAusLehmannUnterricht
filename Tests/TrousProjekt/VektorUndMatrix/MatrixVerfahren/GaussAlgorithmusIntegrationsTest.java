@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GaussAlgorithmusIntegrationsTest {
 
@@ -34,8 +33,13 @@ class GaussAlgorithmusIntegrationsTest {
 
     @Test
     void Given_gleichung_ist_nicht_loesbar_Return_null() {
-        double[][] matrix = {{1, 1, -1, -1}, {2, 5, -7, -5}, {2, -1, 1, 3}, {5, 2, -4, 2}};
-        Matrix matrix = new Matrix(ma)
+        double[][] matrixWerte = {{1, 1, -1, -1}, {2, 5, -7, -5}, {2, -1, 1, 3}, {5, 2, -4, 2}};
+        Matrix matrix = new Matrix(matrixWerte);
+        double[] loesungsWerte = {1, -2, 4, 6};
+        Vektor vektor = new Vektor(loesungsWerte);
+
+        Vektor hoffentlichNull = gaussAlgorithmus.loeseGleichungssystem(matrix, vektor);
+        assertNull(hoffentlichNull);
     }
 
 }
