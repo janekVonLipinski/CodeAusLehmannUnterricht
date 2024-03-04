@@ -7,6 +7,7 @@ public class Matrix {
     private final double[][] matrix;
     private final int anzahlZeilen;
     private final int anzahlSpalten;
+    private final DeterminantenRechner determinantenRechner = new DeterminantenRechner();
 
     public Matrix(double[][] matrix) {
         this.matrix = matrix;
@@ -58,6 +59,10 @@ public class Matrix {
         }
 
         return ergebnis;
+    }
+
+    public double getDeterminante() {
+        return determinantenRechner.getDeterminante(this);
     }
 
     public static Matrix getDrehMatrix(double alpha, double beta, double gamma) {

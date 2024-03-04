@@ -18,23 +18,11 @@ public class GaussAlgorithmus {
 
         double[][] dreiecksMatrix = getStufenForm(matrixArray, vektorArray);
 
-        for (int i = 0; i < dreiecksMatrix.length; i++) {
-            long anzahlNullen = Arrays.stream(dreiecksMatrix[i])
-                    .filter(j -> j == 0)
-                    .count();
-            tausche(dreiecksMatrix[i], i, dreiecksMatrix.length - i -1);
-        }
-        //funkt nicht
-
         System.out.println(Arrays.deepToString(dreiecksMatrix));
-        int groessterIndex = dreiecksMatrix.length - 1;
 
-        if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {
-            if (vektorArray[groessterIndex] == 0) {
-                System.out.println("Unendliche Viele Lösungen");
-            } else {
-                return null;
-            }
+        if (hatGleichungKeineEindeutigeLoesung(dreiecksMatrix,
+                dreiecksMatrix.length - 1, vektorArray)) {
+            return null;
         }
 
         double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektorArray);
@@ -42,6 +30,17 @@ public class GaussAlgorithmus {
         double[] loesung = getLoesung(vektorArray, diagonalMatrix);
 
         return new Vektor(loesung);
+    }
+
+    private static boolean hatGleichungKeineEindeutigeLoesung(double[][] dreiecksMatrix, int groessterIndex, double[] vektorArray) {
+        if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {
+            if (vektorArray[groessterIndex] == 0) {
+                System.out.println("Unendliche Viele Lösungen");
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static double[] getLoesung(double[] vektorArray, double[][] diagonalMatrix) {
