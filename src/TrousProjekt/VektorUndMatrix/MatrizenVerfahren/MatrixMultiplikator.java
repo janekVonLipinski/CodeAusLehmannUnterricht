@@ -1,10 +1,8 @@
 package TrousProjekt.VektorUndMatrix.MatrizenVerfahren;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
-
 public class MatrixMultiplikator {
 
-    public Matrix multipliziere(Matrix m1, Matrix m2) {
+    protected Matrix multipliziere(Matrix m1, Matrix m2) {
         Matrix ergebnis = new Matrix(new double[m1.getAnzahlZeilen()][m2.getAnzahlSpalten()]);
 
         if (m1.getAnzahlSpalten() != m2.getAnzahlZeilen()) {

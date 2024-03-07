@@ -1,5 +1,7 @@
 package TrousProjekt.VektorUndMatrix;
 
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Matrix;
+
 import java.util.Arrays;
 
 public class Vektor {

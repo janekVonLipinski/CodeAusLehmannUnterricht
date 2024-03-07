@@ -1,10 +1,8 @@
 package TrousProjekt.VektorUndMatrix.MatrizenVerfahren;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
-
 public class DeterminantenRechner {
 
-    public double getDeterminante(Matrix m) {
+    protected double getDeterminante(Matrix m) {
         int anzahlZeilen = m.getAnzahlZeilen();
         int anzahlSpalten = m.getAnzahlSpalten();
         double[][] matrix = m.getMatrix();

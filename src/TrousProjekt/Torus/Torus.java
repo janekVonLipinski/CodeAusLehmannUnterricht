@@ -1,6 +1,7 @@
 package TrousProjekt.Torus;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Drehmatrix;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Matrix;
 import TrousProjekt.VektorUndMatrix.Vektor;
 
 import javax.swing.*;
@@ -72,7 +73,7 @@ public class Torus extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         g.translate(WIDTH / 2, HEIGHT / 2);
-        Matrix drehMatrix = Matrix.getDrehMatrix(alpha, beta, gamma);
+        Matrix drehMatrix = Drehmatrix.getDrehMatrix(alpha, beta, gamma);
 
         for (int i = 0; i < punkte.length - 2; i++) {
 

@@ -1,6 +1,6 @@
 package TrousProjekt.VektorUndMatrix.VerfahrenZurLoesungVonLinearenGleichungssystememen;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Matrix;
 import TrousProjekt.VektorUndMatrix.Vektor;
 
 public interface LGSLoeser {

@@ -1,14 +1,12 @@
 package TrousProjekt.VektorUndMatrix;
 
 import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.DeterminantenRechner;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Matrix;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
-
-
-    private final DeterminantenRechner determinantenRechner = new DeterminantenRechner();
 
     @Test
     void Given_() {
@@ -16,7 +14,7 @@ class MatrixTest {
         Matrix alteMatrix = new Matrix(matrix);
         System.out.println(alteMatrix);
 
-        assertEquals(-7, determinantenRechner.getDeterminante(alteMatrix));
+        assertEquals(-7, alteMatrix.getDeterminante());
     }
 
 }

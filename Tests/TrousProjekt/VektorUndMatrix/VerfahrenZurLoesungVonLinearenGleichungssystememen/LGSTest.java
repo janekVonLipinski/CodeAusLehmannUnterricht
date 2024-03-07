@@ -1,6 +1,6 @@
 package TrousProjekt.VektorUndMatrix.VerfahrenZurLoesungVonLinearenGleichungssystememen;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.Matrix;
 import TrousProjekt.VektorUndMatrix.Vektor;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
