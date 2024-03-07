@@ -1,5 +1,8 @@
 package TrousProjekt.VektorUndMatrix;
 
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.DeterminantenRechner;
+import TrousProjekt.VektorUndMatrix.MatrizenVerfahren.MatrixMultiplikator;
+
 import java.util.Arrays;
 
 public class Matrix {
@@ -13,6 +16,12 @@ public class Matrix {
         this.matrix = matrix;
         anzahlSpalten = matrix[0].length;
         anzahlZeilen = matrix.length;
+    }
+
+    public Matrix(Matrix m) {
+        this.matrix = Arrays.stream(m.matrix).map(double[]::clone).toArray(double[][]::new);
+        this.anzahlSpalten = m.anzahlSpalten;
+        this.anzahlZeilen = m.anzahlZeilen;
     }
 
     public double[][] getMatrix() {
@@ -41,24 +50,8 @@ public class Matrix {
         return true;
     }
 
-    public Matrix multipliziere(Matrix matrix) {
-        Matrix ergebnis = new Matrix(new double[anzahlZeilen][matrix.anzahlSpalten]);
-
-        if (anzahlSpalten != matrix.anzahlZeilen) {
-            throw new IllegalArgumentException(
-                    "Zeilen von linker Matrix müssen geleich den Spalten der zweiten sein");
-        }
-
-        for (int i = 0; i < ergebnis.anzahlZeilen; i++) {
-            for (int j = 0; j < ergebnis.anzahlSpalten; j++) {
-                ergebnis.matrix[i][j] = 0;
-                for (int k = 0; k < matrix.anzahlZeilen; k++) {
-                    ergebnis.matrix[i][j] += (this.matrix[i][k] * matrix.matrix[k][j]);
-                }
-            }
-        }
-
-        return ergebnis;
+    public Matrix multipliziere(Matrix m) {
+        return new MatrixMultiplikator().multipliziere(this, m);
     }
 
     public double getDeterminante() {

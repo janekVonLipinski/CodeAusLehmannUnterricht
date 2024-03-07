@@ -1,11 +1,11 @@
-package TrousProjekt.VektorUndMatrix.MatrixVerfahren;
+package TrousProjekt.VektorUndMatrix.VerfahrenZurLoesungVonLinearenGleichungssystememen;
 
 import TrousProjekt.VektorUndMatrix.Matrix;
 import TrousProjekt.VektorUndMatrix.Vektor;
 
 import java.util.Arrays;
 
-public class GaussAlgorithmus {
+public class GaussAlgorithmus implements LGSLoeser {
 
     public Vektor loeseGleichungssystem(Matrix koeffizientenMatrix, Vektor loesungsVektor) {
 
@@ -13,17 +13,15 @@ public class GaussAlgorithmus {
             throw new IllegalArgumentException("Matrix muss quadratisch sein");
         }
 
+        if (koeffizientenMatrix.getDeterminante() == 0) {
+            throw new IllegalArgumentException("Gleichung ist nicht eindeutig lösbar");
+        }
+
         double[][] matrixArray = koeffizientenMatrix.getMatrix().clone();
         double[] vektorArray = loesungsVektor.getVektorWerte().clone();
 
         double[][] dreiecksMatrix = getStufenForm(matrixArray, vektorArray);
-
-        if (hatGleichungKeineEindeutigeLoesung(dreiecksMatrix, dreiecksMatrix.length -1)) {
-            throw new IllegalArgumentException("Gleichung nicht eindeutig lösbar");
-        }
-
         double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektorArray);
-
         double[] loesung = getLoesung(vektorArray, diagonalMatrix);
 
         return new Vektor(loesung);
@@ -44,11 +42,12 @@ public class GaussAlgorithmus {
     private double[][] getStufenForm(double[][] matrix, double[] vektor) {
 
         for (int j = 0; j < matrix.length; j++) {
-            int i = 1;
 
-            while (matrix[j][j] == 0) {
+            int i = 1;
+            while (istWertAufDiagonale0(matrix, j)) {
                 tausche(matrix, j, i);
-                tausche(vektor, j, i++);
+                tausche(vektor, j, i);
+                i++;
             }
             for (int k = 1; j + k < matrix.length; k++) {
                 double[] zeileVonDerSubtrahiertWird = matrix[j + k];
@@ -66,6 +65,10 @@ public class GaussAlgorithmus {
             }
         }
         return matrix;
+    }
+
+    private static boolean istWertAufDiagonale0(double[][] matrix, int j) {
+        return matrix[j][j] == 0;
     }
 
     private double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
