@@ -1,7 +1,5 @@
 package TrousProjekt.VektorUndMatrix;
 
-import TrousProjekt.VektorUndMatrix.Matrix;
-
 public class DeterminantenRechner {
 
     protected double getDeterminante(Matrix m) {
@@ -19,20 +17,16 @@ public class DeterminantenRechner {
         }
 
         for (int i = 0; i < anzahlSpalten; i++) {
-            Matrix verkleinerteMatrix = getVerkleinerteMatrix(m, i);
-            double zunahme = matrix[0][i] * getDeterminante(verkleinerteMatrix);
-            if (i % 2 == 0) {
-                ergebnis += zunahme;
-            } else {
-                ergebnis -= zunahme;
-            }
+            Matrix verkleinerteMatrix = getMatrixMitGestrichenerErstenZeileUndUebergebenerSpalte(m, i);
+            double zunahme = Math.pow(-1, i) * matrix[0][i] * getDeterminante(verkleinerteMatrix);
+            ergebnis += zunahme;
         }
 
         return ergebnis;
     }
 
 
-    private Matrix getVerkleinerteMatrix(Matrix m, int spalte) {
+    private Matrix getMatrixMitGestrichenerErstenZeileUndUebergebenerSpalte(Matrix m, int spalte) {
         int anzahlSpalten = m.getAnzahlSpalten();
         int anzahlZeilen = m.getAnzahlZeilen();
         double[][] matrix = m.getMatrix();

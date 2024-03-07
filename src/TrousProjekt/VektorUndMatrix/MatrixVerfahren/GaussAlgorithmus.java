@@ -7,22 +7,19 @@ import java.util.Arrays;
 
 public class GaussAlgorithmus {
 
-    public Vektor loeseGleichungssystem(Matrix koeffizientenMatrix, Vektor vektor) {
+    public Vektor loeseGleichungssystem(Matrix koeffizientenMatrix, Vektor loesungsVektor) {
 
         if (koeffizientenMatrix.getAnzahlSpalten() != koeffizientenMatrix.getAnzahlZeilen()) {
             throw new IllegalArgumentException("Matrix muss quadratisch sein");
         }
 
         double[][] matrixArray = koeffizientenMatrix.getMatrix().clone();
-        double[] vektorArray = vektor.getVektorWerte().clone();
+        double[] vektorArray = loesungsVektor.getVektorWerte().clone();
 
         double[][] dreiecksMatrix = getStufenForm(matrixArray, vektorArray);
 
-        System.out.println(Arrays.deepToString(dreiecksMatrix));
-
-        if (hatGleichungKeineEindeutigeLoesung(dreiecksMatrix,
-                dreiecksMatrix.length - 1, vektorArray)) {
-            return null;
+        if (hatGleichungKeineEindeutigeLoesung(dreiecksMatrix, dreiecksMatrix.length -1)) {
+            throw new IllegalArgumentException("Gleichung nicht eindeutig lösbar");
         }
 
         double[][] diagonalMatrix = getDiagonalMatrix(dreiecksMatrix, vektorArray);
@@ -32,15 +29,8 @@ public class GaussAlgorithmus {
         return new Vektor(loesung);
     }
 
-    private static boolean hatGleichungKeineEindeutigeLoesung(double[][] dreiecksMatrix, int groessterIndex, double[] vektorArray) {
-        if (dreiecksMatrix[groessterIndex][groessterIndex] == 0) {
-            if (vektorArray[groessterIndex] == 0) {
-                System.out.println("Unendliche Viele Lösungen");
-            } else {
-                return true;
-            }
-        }
-        return false;
+    private boolean hatGleichungKeineEindeutigeLoesung(double[][] dreiecksMatrix, int groessterIndex) {
+        return dreiecksMatrix[groessterIndex][groessterIndex] == 0;
     }
 
     private static double[] getLoesung(double[] vektorArray, double[][] diagonalMatrix) {
@@ -49,28 +39,6 @@ public class GaussAlgorithmus {
             loesung[i] = vektorArray[i] / diagonalMatrix[i][i];
         }
         return loesung;
-    }
-
-    private double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
-
-        for (int j = matrix.length - 1; j >= 0; j--) {
-            for (int k = 1; j - k >= 0; k++) {
-                double[] zeileVonDerSubtrahiertWird = matrix[j-k];
-                double[] zeileDieSubtrahiertWird = matrix[j];
-
-                double koeffizient = getKoeffizient(
-                        zeileDieSubtrahiertWird[j],
-                        zeileVonDerSubtrahiertWird[j]
-                );
-
-                matrix[j - k] = subtrahiereZeile(zeileDieSubtrahiertWird,
-                        zeileVonDerSubtrahiertWird,
-                        koeffizient);
-
-                vektor[j - k] = vektor[j - k] - koeffizient * vektor[j];
-            }
-        }
-        return matrix;
     }
 
     private double[][] getStufenForm(double[][] matrix, double[] vektor) {
@@ -100,6 +68,28 @@ public class GaussAlgorithmus {
         return matrix;
     }
 
+    private double[][] getDiagonalMatrix(double[][] matrix, double[] vektor) {
+
+        for (int j = matrix.length - 1; j >= 0; j--) {
+            for (int k = 1; j - k >= 0; k++) {
+                double[] zeileVonDerSubtrahiertWird = matrix[j-k];
+                double[] zeileDieSubtrahiertWird = matrix[j];
+
+                double koeffizient = getKoeffizient(
+                        zeileDieSubtrahiertWird[j],
+                        zeileVonDerSubtrahiertWird[j]
+                );
+
+                matrix[j - k] = subtrahiereZeile(zeileDieSubtrahiertWird,
+                        zeileVonDerSubtrahiertWird,
+                        koeffizient);
+
+                vektor[j - k] = vektor[j - k] - koeffizient * vektor[j];
+            }
+        }
+        return matrix;
+    }
+
     private void tausche(double[][] matrixArray, int indexErsteZeile, int indexZweiteZeile) {
 
         double[] ersteZeile = matrixArray[indexErsteZeile];
@@ -115,7 +105,7 @@ public class GaussAlgorithmus {
         vektor[zweiterIndex] = temp;
     }
 
-    protected double[] subtrahiereZeile(double[] ersteZeile, double[] zweiteZeile,
+    private double[] subtrahiereZeile(double[] ersteZeile, double[] zweiteZeile,
                                         double koeffiezient) {
 
         double[] multiplizierteZeile = getMultiplizierteZeile(ersteZeile, koeffiezient);
@@ -136,6 +126,9 @@ public class GaussAlgorithmus {
     }
 
     private double getKoeffizient(double ersterWert, double zweiterWert) {
+        if (ersterWert == 0) {
+            throw new ArithmeticException("Shit man, you have devided by 0");
+        }
         return zweiterWert / ersterWert;
     }
 }
