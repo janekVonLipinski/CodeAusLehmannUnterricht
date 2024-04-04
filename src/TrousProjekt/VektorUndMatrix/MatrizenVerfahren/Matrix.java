@@ -15,10 +15,10 @@ public class Matrix {
         anzahlZeilen = matrix.length;
     }
 
-    public Matrix(Matrix m) {
-        this.matrix = Arrays.stream(m.matrix).map(double[]::clone).toArray(double[][]::new);
-        this.anzahlSpalten = m.anzahlSpalten;
-        this.anzahlZeilen = m.anzahlZeilen;
+    public Matrix(Matrix andereMatrix) {
+        this.matrix = Arrays.stream(andereMatrix.matrix).map(double[]::clone).toArray(double[][]::new);
+        this.anzahlSpalten = andereMatrix.anzahlSpalten;
+        this.anzahlZeilen = andereMatrix.anzahlZeilen;
     }
 
     public double[][] getMatrix() {
@@ -33,13 +33,13 @@ public class Matrix {
         return anzahlZeilen;
     }
 
-    public boolean istGleich(Matrix m) {
-        if (anzahlSpalten != m.anzahlSpalten || anzahlZeilen != m.anzahlZeilen) {
+    public boolean istGleich(Matrix andereMatrix) {
+        if (anzahlSpalten != andereMatrix.anzahlSpalten || anzahlZeilen != andereMatrix.anzahlZeilen) {
             return false;
         }
-        for (int i = 0; i < anzahlSpalten; i++) {
-            for (int j = 0; j < anzahlSpalten; j++) {
-                if (matrix[i][j] != m.matrix[i][j]) {
+        for (int row = 0; row < anzahlSpalten; row++) {
+            for (int col = 0; col < anzahlSpalten; col++) {
+                if (matrix[row][col] != andereMatrix.matrix[row][col]) {
                     return false;
                 }
             }
@@ -47,8 +47,8 @@ public class Matrix {
         return true;
     }
 
-    public Matrix multipliziere(Matrix m) {
-        return new MatrixMultiplikator().multipliziere(this, m);
+    public Matrix multipliziere(Matrix andereMatrix) {
+        return new MatrixMultiplikator().multipliziere(this, andereMatrix);
     }
 
     public double getDeterminante() {
